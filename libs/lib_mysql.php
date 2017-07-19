@@ -11,7 +11,7 @@ define('DB_NOCONNECTION', -1000);
  * @author	tommy
  * @version	$Revision: 1.2 $
  */
-class mysql_connection {
+class mysql_conn {
 	var $connection;
 	var $database;
 	var $server;
@@ -49,9 +49,9 @@ class mysql_connection {
 	}
 
 	function open() {
-		$this->connection =  @mysql_pconnect($this->server, $this->username, $this->password);
+		$this->connection =  @mysqli_connect($this->server, $this->username, $this->password);
 		if($this->connection) {
-			mysql_select_db($this->database, $this->connection);
+			@mysqli_select_db($this->database, $this->connection);
 			return true;
 		} else {
 			if(is_callable($this->error_handler))
@@ -71,7 +71,7 @@ class mysql_connection {
 		$this->last_query = $query;
 
 		$start_time = $this->_microtime();
-		$res = mysql_query($query, $this->connection);
+		$res = @mysqli_query($query, $this->connection);
 		$this->total_time_used += $this->_microtime() - $start_time;
 		
 		if($res) {
@@ -94,7 +94,7 @@ class mysql_connection {
 		$this->last_query = $query;
 
 		$start_time = $this->_microtime();
-		$res = mysql_query($query, $this->connection);
+		$res = @mysqli_query($query, $this->connection);
 		$this->total_time_used += $this->_microtime() - $start_time;
 		
 		if($res) {
@@ -115,7 +115,7 @@ class mysql_connection {
 		$this->last_query = $query;
 
 		$start_time = $this->_microtime();
-		$res = mysql_query($query, $this->connection);
+		$res = mysqli_query($query, $this->connection);
 		$this->total_time_used += $this->_microtime() - $start_time;
 		
 		$affected = mysql_affected_rows();
